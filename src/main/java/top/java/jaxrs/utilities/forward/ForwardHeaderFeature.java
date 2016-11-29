@@ -27,8 +27,8 @@ public class ForwardHeaderFeature implements DynamicFeature
     Provider<ForwardHeaderContainerRequestFilter> filterFactory;
 
     @Override
-    public void configure(ResourceInfo resourceInfo, FeatureContext context) {
-
+    public void configure(ResourceInfo resourceInfo, FeatureContext context)
+    {
         context.register(filterFactory.get());
     }
 }
