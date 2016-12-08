@@ -14,26 +14,23 @@
 //                                                                          //
 package top.java.jaxrs.utilities.forward;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
+import java.io.IOException;
+import javax.ws.rs.client.ClientRequestContext;
+import javax.ws.rs.client.ClientRequestFilter;
+import javax.ws.rs.core.MultivaluedMap;
 
 /**
-* The {@link AddressBookBinder} is the HK2 binder that binds the external dependencies of the address book service.
+* The {@link ForwardClientRequestFilter} transfers header values from the shared {@link ForwardHeaderMap}
+* to the request headers of an outgoing JAX-RS call.
 *
 * @author Mirko Raner
 **/
-public class AddressBookBinder extends AbstractBinder
+public class ForwardClientRequestFilter implements ClientRequestFilter
 {
     @Override
-    protected void configure()
+    public void filter(ClientRequestContext requestContext) throws IOException
     {
-        Client client = ClientBuilder.newClient();
-        client.register(ForwardClientRequestFilter.class);
-        WebTarget target = client.target("http://localhost:8080");
-        AddressBook addressBook = WebResourceFactory.newResource(AddressBook.class, target);
-        bind(addressBook).to(AddressBook.class);
+        MultivaluedMap<String, Object> requestHeaders = requestContext.getHeaders();
+        ForwardHeaderMap.INSTANCE.get().forEach((key, value) -> requestHeaders.add(key, value));
     }
 }

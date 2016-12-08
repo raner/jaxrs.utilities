@@ -14,26 +14,38 @@
 //                                                                          //
 package top.java.jaxrs.utilities.forward;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.FeatureContext;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
+import org.glassfish.hk2.utilities.binding.ServiceBindingBuilder;
+import org.glassfish.jersey.internal.spi.AutoDiscoverable;
+import top.java.jaxrs.utilities.forward.internal.AnnotationCollector;
 
-/**
-* The {@link AddressBookBinder} is the HK2 binder that binds the external dependencies of the address book service.
-*
-* @author Mirko Raner
-**/
-public class AddressBookBinder extends AbstractBinder
+public class ForwardAutoDiscoverable implements AutoDiscoverable
 {
+    private Class<ForwardFeature> forwardHeaderFeature = ForwardFeature.class;
+
     @Override
-    protected void configure()
+    public void configure(FeatureContext context)
     {
-        Client client = ClientBuilder.newClient();
-        client.register(ForwardClientRequestFilter.class);
-        WebTarget target = client.target("http://localhost:8080");
-        AddressBook addressBook = WebResourceFactory.newResource(AddressBook.class, target);
-        bind(addressBook).to(AddressBook.class);
+        if (!context.getConfiguration().isRegistered(forwardHeaderFeature))
+        {
+            AbstractBinder binder = new AbstractBinder()
+            {
+                @Override
+                protected void configure()
+                {
+                    bindToSelf(ForwardContainerRequestFilter.class);
+                    bindToSelf(ForwardClientRequestFilter.class);
+                    bindToSelf(AnnotationCollector.class);
+                }
+
+                private ServiceBindingBuilder<?> bindToSelf(Class<?> type)
+                {
+                    return bind(type).to(type);
+                }
+            };
+            context.register(binder);
+            context.register(forwardHeaderFeature);
+        }
     }
 }

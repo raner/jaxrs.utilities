@@ -1,23 +1,21 @@
 //                                                                          //
-// Copyright 2016 Mirko Raner                                               //
+// top.java.jaxrs.utilities - Enhancements and utilities for JAX-RS         //
 //                                                                          //
-// Licensed under the Apache License, Version 2.0 (the "License");          //
-// you may not use this file except in compliance with the License.         //
-// You may obtain a copy of the License at                                  //
+// Written in 2016 by Mirko Raner (mirko@raner.ws)                          //
 //                                                                          //
-//     http://www.apache.org/licenses/LICENSE-2.0                           //
+// To the extent possible under law, the author(s) have dedicated all       //
+// copyright and related and neighboring rights to this software to the     //
+// public domain worldwide. This software is distributed without any        //
+// warranty.                                                                //
+// You should have received a copy of the CC0 Public Domain Dedication      //
+// along with this software. If not, see                                    //
 //                                                                          //
-// Unless required by applicable law or agreed to in writing, software      //
-// distributed under the License is distributed on an "AS IS" BASIS,        //
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. //
-// See the License for the specific language governing permissions and      //
-// limitations under the License.                                           //
+// http://creativecommons.org/publicdomain/zero/1.0/                        //
 //                                                                          //
 package top.java.jaxrs.utilities.forward;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import top.java.jaxrs.utilities.forward.Forward;
 
 /**

@@ -1,17 +1,16 @@
 //                                                                          //
-// Copyright 2016 Mirko Raner                                               //
+// top.java.jaxrs.utilities - Enhancements and utilities for JAX-RS         //
 //                                                                          //
-// Licensed under the Apache License, Version 2.0 (the "License");          //
-// you may not use this file except in compliance with the License.         //
-// You may obtain a copy of the License at                                  //
+// Written in 2016 by Mirko Raner (mirko@raner.ws)                          //
 //                                                                          //
-//     http://www.apache.org/licenses/LICENSE-2.0                           //
+// To the extent possible under law, the author(s) have dedicated all       //
+// copyright and related and neighboring rights to this software to the     //
+// public domain worldwide. This software is distributed without any        //
+// warranty.                                                                //
+// You should have received a copy of the CC0 Public Domain Dedication      //
+// along with this software. If not, see                                    //
 //                                                                          //
-// Unless required by applicable law or agreed to in writing, software      //
-// distributed under the License is distributed on an "AS IS" BASIS,        //
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. //
-// See the License for the specific language governing permissions and      //
-// limitations under the License.                                           //
+// http://creativecommons.org/publicdomain/zero/1.0/                        //
 //                                                                          //
 package top.java.jaxrs.utilities.forward;
 
@@ -42,7 +41,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
 * {@link AddressBookIntegrationTest} is an embedded-Tomcat-based integration test for verifying the integration between
-* Jersey and Projo.
+* Jersey and top.java.jaxrs.utilities.
 *
 * @author Mirko Raner
 **/
@@ -89,14 +88,16 @@ public class AddressBookIntegrationTest
     }
 
     @Test
-    public void testProjoRequestAndResponse() throws Exception
+    public void testRequestAndResponse() throws Exception
     {
         String json = "{\"street\":\"1 Main Street\", \"city\":\"Smalltown\", \"state\":\"CA\", \"zipCode\":\"99999\"}";
         url("addressbookForwarding/John%20Doe").method(PUT)
+            .header("ticket", "VALID_TICKET")
             .body().set(json).back()
             .fetch().as(RestResponse.class)
             .assertStatus(HTTP_NO_CONTENT);
         url("addressbookForwarding/John%20Doe").method(GET)
+            .header("ticket", "VALID_TICKET")
             .fetch().as(RestResponse.class)
             .assertStatus(HTTP_OK)
             .assertBody(matches(json));

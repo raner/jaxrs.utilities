@@ -14,26 +14,20 @@
 //                                                                          //
 package top.java.jaxrs.utilities.forward;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.ws.rs.container.DynamicFeature;
+import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.FeatureContext;
 
-/**
-* The {@link AddressBookBinder} is the HK2 binder that binds the external dependencies of the address book service.
-*
-* @author Mirko Raner
-**/
-public class AddressBookBinder extends AbstractBinder
+public class ForwardFeature implements DynamicFeature
 {
+    @Inject
+    Provider<ForwardContainerRequestFilter> filterFactory;
+
     @Override
-    protected void configure()
+    public void configure(ResourceInfo resourceInfo, FeatureContext context)
     {
-        Client client = ClientBuilder.newClient();
-        client.register(ForwardClientRequestFilter.class);
-        WebTarget target = client.target("http://localhost:8080");
-        AddressBook addressBook = WebResourceFactory.newResource(AddressBook.class, target);
-        bind(addressBook).to(AddressBook.class);
+        context.register(filterFactory.get());
     }
 }
