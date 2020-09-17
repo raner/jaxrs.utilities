@@ -1,7 +1,7 @@
 //                                                                          //
 // top.java.jaxrs.utilities - Enhancements and utilities for JAX-RS         //
 //                                                                          //
-// Written in 2016 by Mirko Raner (mirko@raner.ws)                          //
+// Written 2016 - 2020 by Mirko Raner (mirko@raner.ws)                      //
 //                                                                          //
 // To the extent possible under law, the author(s) have dedicated all       //
 // copyright and related and neighboring rights to this software to the     //
@@ -16,7 +16,6 @@ package top.java.jaxrs.utilities.forward;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import top.java.jaxrs.utilities.forward.Forward;
 
 /**
 * {@link AddressBookForwardingImpl} is a simple implementation of the {@link AddressBookForwarding} interface that
